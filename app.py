@@ -6,107 +6,34 @@ import csv
 
 app = Flask(__name__)
 
+"""
+atribut yg dipakai:
+ jenkel, pekerjaan_ortu, kabkota, id_jenis_sekolah
+"""
+
+def getData(df, col):
+    data = {}
+    for i in range(len(df.index)):
+        found = False
+        for key in data:
+            if key == df.at[i,col]:
+                data[df.at[i,col]] += 1
+                found = True
+        if not found:
+            data[df.at[i,col]] = 1
+    return data
+
+data_siswa = pandas.read_csv("DataSiswaBaru.csv")
+jenis_kelamin = getData(data_siswa,"jenkel")
+pekerjaan_ortu =  getData(data_siswa,"pekerjaan_ortu")
+print(jenis_kelamin)
+print(pekerjaan_ortu)
 
 
 @app.route("/")
 def main():
+    fig, ax = plt.subplots()
     
-    iris_df = pandas.read_csv("IRIS.csv")
-    fig, ax = plt.subplots()
-    sepal_width_iris_setosa = []
-    sepal_length_iris_setosa = []
-    sepal_width_versicolor = []
-    sepal_length_versicolor = []
-    sepal_width_virginica = []
-    sepal_length_virginica = []
-    for i in range(len(iris_df.index)):
-        if (iris_df.at[i, "species"] == "Iris-setosa"):
-            sepal_width_iris_setosa.append(iris_df.at[i, "sepal_width"])
-            sepal_length_iris_setosa.append(iris_df.at[i, "sepal_length"])
-        elif (iris_df.at[i, "species"] == "Iris-versicolor"):
-            sepal_width_versicolor.append(iris_df.at[i, "sepal_width"])
-            sepal_length_versicolor.append(iris_df.at[i, "sepal_length"])
-        elif (iris_df.at[i, "species"] == "Iris-virginica"):
-            sepal_width_virginica.append(iris_df.at[i, "sepal_width"])
-            sepal_length_virginica.append(iris_df.at[i, "sepal_length"])
-    ax.scatter(
-        sepal_width_iris_setosa,
-        sepal_length_iris_setosa,
-        200,
-        c="green",
-        alpha=0.5,
-        marker=(4, 0),
-        label="Iris Setosa"
-    )
-    ax.scatter(
-        sepal_width_versicolor,
-        sepal_length_versicolor,
-        200,
-        c="red",
-        alpha=0.5,
-        marker=(3, 0),
-        label="Iris Versicolor"
-    )
-    ax.scatter(
-        sepal_width_virginica,
-        sepal_length_virginica,
-        200,
-        c="blue",
-        alpha=0.5,
-        marker=(5, 0),
-        label="Iris Virginicia"
-        )
-    ax.set_xlabel("Sepal Width")
-    ax.set_ylabel("Sepal Length")
-    ax.legend()
-    plt.savefig("static/graph1.png")
-
-    fig, ax = plt.subplots()
-    petal_width_iris_setosa = []
-    petal_length_iris_setosa = []
-    petal_width_versicolor = []
-    petal_length_versicolor = []
-    petal_width_virginica = []
-    petal_length_virginica = []
-    for i in range(len(iris_df.index)):
-        if (iris_df.at[i, "species"] == "Iris-setosa"):
-            petal_width_iris_setosa.append(iris_df.at[i, "petal_width"])
-            petal_length_iris_setosa.append(iris_df.at[i, "petal_length"])
-        elif (iris_df.at[i, "species"] == "Iris-versicolor"):
-            petal_width_versicolor.append(iris_df.at[i, "petal_width"])
-            petal_length_versicolor.append(iris_df.at[i, "petal_length"])
-        elif (iris_df.at[i, "species"] == "Iris-virginica"):
-            petal_width_virginica.append(iris_df.at[i, "petal_width"])
-            petal_length_virginica.append(iris_df.at[i, "petal_length"])
-    ax.scatter(
-        petal_width_iris_setosa,
-        petal_length_iris_setosa,
-        200, c="green", alpha=0.5,
-        marker=(4, 0),
-        label="Iris Setosa"
-    )
-    ax.scatter(
-        petal_width_versicolor,
-        petal_length_versicolor,
-        200,
-        c="red",
-        alpha=0.5,
-        marker=(3, 0),
-        label="Iris Versicolor"
-    )
-    ax.scatter(
-        petal_width_virginica,
-        petal_length_virginica,
-        200,
-        c="blue",
-        alpha=0.5,
-        marker=(5, 0),
-        label="Iris Virginicia"
-    )
-    ax.set_xlabel("Petal Width")
-    ax.set_ylabel("Petal Length")
-    ax.legend()
-    plt.savefig("static/graph2.png")
     return render_template("index.html")
 
 
