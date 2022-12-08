@@ -11,7 +11,7 @@ atribut yg dipakai:
  jenkel, pekerjaan_ortu, kabkota, id_jenis_sekolah
 """
 
-def getData(df, col):
+def parseData(df, col):
     data = {}
     for i in range(len(df.index)):
         found = False
@@ -27,10 +27,10 @@ def getData(df, col):
     return data
 
 data_siswa = pandas.read_csv("DataSiswaBaru.csv")
-jenis_kelamin = getData(data_siswa,"jenkel")
-pekerjaan_ortu =  getData(data_siswa,"pekerjaan_ortu")
-kabkota =  getData(data_siswa,"kabkota")
-jenis_sekolah =  getData(data_siswa,"jenis_sekolah")
+jenis_kelamin = parseData(data_siswa,"jenkel")
+pekerjaan_ortu =  parseData(data_siswa,"pekerjaan_ortu")
+kabkota =  parseData(data_siswa,"kabkota")
+jenis_sekolah =  parseData(data_siswa,"jenis_sekolah")
 
 @app.route("/")
 def main():
@@ -69,8 +69,6 @@ def main():
     ax.set_ylabel("Jenis Sekolah")
     plt.savefig("static/graph4.png")
     return render_template("index.html")
-
-
 
 @app.route("/upload", methods=["GET","POST"])
 def upload():
